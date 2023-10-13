@@ -49,8 +49,8 @@ class UserController extends Controller
         }
     }
 
-    public function viewAll()
+    public function viewAllAjax()
     {
-        return json_encode(User::findAll());
+        $this->renderJson(User::findAll());
     }
 }
