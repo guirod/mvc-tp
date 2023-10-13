@@ -1,0 +1,10 @@
+{
+    "name": "guirod/mvc-tp",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Guirod\\MvcTp\\": "src/"
+        }
+    },
+    "require": {}
+}
