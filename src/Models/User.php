@@ -3,6 +3,8 @@
 namespace Guirod\MvcTp\Models;
 
 use PDO;
+use PDOException;
+
 
 class User
 {
@@ -17,6 +19,24 @@ class User
     {
     }
 
+    public function save()
+    {
+        try {
+            $conn = Connexion::getInstance()->getConn();
+            $stt = $conn->prepare('INSERT INTO `user` (email,password_hash,nom,prenom,adresse) VALUES (?,?,?,?,?);');
+            $stt->bindParam(1, $this->email);
+            $stt->bindParam(2, $this->passwordHash);
+            $stt->bindParam(3, $this->nom);
+            $stt->bindParam(4, $this->prenom);
+            $stt->bindParam(5, $this->adresse);
+            $stt->execute();
+            $this->id = $conn->lastInsertId();
+        } catch (PDOException $e) {
+            // Logguer l'erreur dans le but de pouvoir reproduire l'anomalie
+            echo $e->getMessage();
+        }
+    }
+
     public static function findAll(): array
     {
         $result = [];
@@ -29,7 +49,7 @@ class User
         return $result;
     } 
 
-    public static function findById(int $id): User
+    public static function findById(int $id): ?User
     {
         $conn = Connexion::getInstance()->getConn();
         $stt = $conn->prepare('SELECT * FROM `user` WHERE id = ?');

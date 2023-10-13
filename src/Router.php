@@ -26,6 +26,9 @@ class Router
             $controller = $this->routes[$uri]['controller'];
             $action = $this->routes[$uri]['action'];
 
+            // Clean de la superglobale $_GET
+            unset($_GET['route']);
+            
             $controller = new $controller();
             $controller->$action($requestParams);
         } else {

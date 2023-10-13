@@ -28,4 +28,29 @@ class UserController extends Controller
             ]
         );
     }
+
+    public function add()
+    {
+        $isSubmit = isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['email']);
+
+        if ($isSubmit) {
+            // TODO traiter l'enregistrement de l'utilisateur
+            $user = new User();
+            $user->nom = htmlspecialchars($_POST['nom']);
+            $user->prenom =  htmlspecialchars($_POST['prenom']);
+            $user->email = htmlspecialchars($_POST['email']);
+            $user->passwordHash = 'fjdklsjf';
+            $user->save();
+        
+            $this->view(['id' => $user->id]);
+
+        } else {
+            $this->render('user/add');
+        }
+    }
+
+    public function viewAll()
+    {
+        return json_encode(User::findAll());
+    }
 }
