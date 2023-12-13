@@ -16,12 +16,43 @@
                 <?= $user->email ?>)<br />
                 Habite au :
                 <?= $user->adresse ?>
+                <button onclick="removeUser(<?= $user->id ?>)">Supprimer</button>
             </p>
         </div>
     <?php endforeach; ?>
 </body>
 
 <script>
+    function removeUser(id) {
+        let data = new FormData();
+        data.append('id', id);
+        
+        let requestParams = {
+            method: "POST",
+            headers: new Headers(),
+            mode: "cors",
+            cache: "default",
+            body: data,
+        };
+
+        // let data = new URLSearchParams({
+        //     id: id
+        // })
+        // let requestParams = {
+        //     method: "POST",
+        //     headers: new Headers(),
+        //     mode: "cors",
+        //     cache: "default",
+        //     body: data,
+        // };
+        fetch("/back/mvc-tp/user/remove", requestParams).
+            then(function (response) {
+                if (response.ok) {
+                    console.log('ok');
+                }
+            });
+    }
+
     /*
     * Test d'une requête Ajax en utilisant notre contrôleur (UserControlleur viewAllAjax)
     */
@@ -34,7 +65,7 @@
         cache: "default",
     };
 
-    fetch("/mvc-tp/json", requestParams).
+    fetch("/back/mvc-tp/json", requestParams).
         then(function (response) {
             if (response.ok) {
                 return response.json();
@@ -45,4 +76,5 @@
             });
         });
 </script>
+
 </html>

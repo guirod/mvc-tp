@@ -12,11 +12,11 @@ class UserController extends Controller
         $this->render('user/index', ['users' => User::findAll()]);
     }
 
+    /** Appeler cette route ?id=x */
     public function view(array $params)
     {
         $user = User::findById((int)$params['id']);
 
-        
         $this->render(
             'user/view', 
             [
@@ -47,6 +47,19 @@ class UserController extends Controller
         } else {
             $this->render('user/add');
         }
+    }
+
+    public function remove()
+    {
+        if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+            //Retrieve the user
+            $user = User::findById((int)$_POST['id']);
+            if ($user !== null) {
+                $user->remove();
+            }
+        }
+
+        $this->index();
     }
 
     public function viewAllAjax()

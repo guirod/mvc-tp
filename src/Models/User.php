@@ -19,6 +19,19 @@ class User
     {
     }
 
+    public function remove()
+    {
+        try {
+            $conn = Connexion::getInstance()->getConn();
+            $stt = $conn->prepare('DELETE FROM `user` WHERE id = ?');
+            $stt->bindParam(1, $this->id, PDO::PARAM_INT);
+            $stt->execute();
+        } catch (PDOException $e) {
+            // Logguer l'erreur dans le but de pouvoir reproduire l'anomalie
+            echo $e->getMessage();
+        }
+    }
+
     public function save()
     {
         try {
@@ -77,4 +90,8 @@ class User
 
         return $user;
     } 
+
+    public function afficheNom(){
+        return $this->nom . ' ' . $this->prenom;
+    }
 }
